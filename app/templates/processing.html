@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Processing · AVOCADO{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h2>Processing your dataset</h2>
+    <p>Please wait while we cluster your data. This may take a moment.</p>
+    <div class="spinner" role="status" aria-live="polite" aria-label="Processing">
+      <span class="spinner-piece"></span>
+      <span class="spinner-piece delayed"></span>
+      <span class="sr-only">Processing...</span>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    const taskId = "{{ task_id }}";
+    const pollStatus = async () => {
+      try {
+        const response = await fetch(`/status/${taskId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch status");
+        }
+        const data = await response.json();
+        if (data.status === "completed" && data.redirect_url) {
+          window.location.href = data.redirect_url;
+        } else if (data.status === "failed") {
+          window.location.href = `/results/${taskId}`;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    setInterval(pollStatus, 1500);
+  </script>
+{% endblock %}
+

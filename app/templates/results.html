@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Results · AVOCADO{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h2>Clustering results</h2>
+    {% if error %}
+      <div class="alert alert-error">
+        <h3>We ran into a problem</h3>
+        <p>{{ error }}</p>
+        <a class="button" href="{{ url_for('upload_form') }}">Try again</a>
+      </div>
+    {% elif result %}
+      <div class="results-summary">
+        <p><strong>Number of clusters:</strong> {{ result.number_of_clusters }}</p>
+        <a class="shimmer-btn" href="{{ url_for('download_result', task_id=task_id) }}">
+          <span class="shimmer-label">Download JSON</span>
+          <span class="shimmer-glow" aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="clusters-grid">
+        {% for cluster_name, persons in result.clusters.items() %}
+          <div class="cluster-card">
+            <h3>{{ cluster_name }}</h3>
+            {% if persons %}
+              <table class="cluster-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for person in persons %}
+                    <tr>
+                      <td>{{ loop.index }}</td>
+                      <td>{{ person }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p>No members found for this cluster.</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No results available for this task.</p>
+      <a class="button" href="{{ url_for('upload_form') }}">Upload another file</a>
+    {% endif %}
+  </section>
+{% endblock %}
+

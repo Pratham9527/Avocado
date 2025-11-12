@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Upload CSV · AVOCADO{% endblock %}
+
+{% block content %}
+  <div class="container-scroll" id="containerScroll">
+    <div class="container-scroll-inner">
+      <div class="container-scroll-header" id="scrollHeader">
+        <h1 class="container-scroll-brand">AVOCADO</h1>
+        <h2 class="container-scroll-title">
+          Your Personal <br />
+          <span class="container-scroll-title-large">DATA ANALYST</span>
+        </h2>
+      </div>
+      <div class="container-scroll-card" id="scrollCard">
+        <div class="container-scroll-card-inner">
+          <img 
+            src="{{ url_for('static', path='images/clustering-diagram.png') }}" 
+            alt="AVOCADO Visualization" 
+            class="container-scroll-image"
+            draggable="false"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="card upload-section">
+    <h2>Get Started with Your Data</h2>
+    <p class="upload-instructions">Upload a CSV file to begin. Make sure your file includes a <code>name</code> column for proper clustering analysis.</p>
+    <form class="upload-form" action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+      <label class="input-label" for="file">Choose your CSV file</label>
+      <input class="file-input" id="file" name="file" type="file" accept=".csv" required />
+      <button class="button interactive-hover-button" type="submit">
+        <span class="button-text">Start clustering</span>
+        <span class="button-shine"></span>
+      </button>
+    </form>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    // Container Scroll Animation - matching Framer Motion behavior
+    const containerScroll = document.getElementById('containerScroll');
+    const scrollHeader = document.getElementById('scrollHeader');
+    const scrollCard = document.getElementById('scrollCard');
+    
+    if (containerScroll && scrollHeader && scrollCard) {
+      let isMobile = window.innerWidth <= 768;
+      
+      window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+      });
+      
+      const getScaleDimensions = () => {
+        return isMobile ? [0.7, 0.9] : [1.05, 1];
+      };
+      
+      const handleScroll = () => {
+        const rect = containerScroll.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const containerTop = rect.top;
+        const containerHeight = rect.height;
+        
+        // Calculate scroll progress (0 to 1)
+        const scrollProgress = Math.max(0, Math.min(1, 
+          (windowHeight - containerTop) / (windowHeight + containerHeight)
+        ));
+        
+        // Rotate: from 20deg to 0deg
+        const rotate = 20 * (1 - scrollProgress);
+        
+        // Scale: from scaleDimensions[0] to scaleDimensions[1]
+        const scaleDims = getScaleDimensions();
+        const scale = scaleDims[0] + (scaleDims[1] - scaleDims[0]) * scrollProgress;
+        
+        // Translate: from 0 to -100px
+        const translate = -100 * scrollProgress;
+        
+        // Apply transforms
+        scrollCard.style.transform = `perspective(1000px) rotateX(${rotate}deg) scale(${scale})`;
+        scrollHeader.style.transform = `translateY(${translate}px)`;
+      };
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll(); // Initial call
+    }
+
+    // Interactive Hover Button - Mouse tracking ripple effect
+    const interactiveButton = document.querySelector('.interactive-hover-button');
+    if (interactiveButton) {
+      interactiveButton.addEventListener('mousemove', (e) => {
+        const rect = interactiveButton.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        interactiveButton.style.setProperty('--mouse-x', `${x}px`);
+        interactiveButton.style.setProperty('--mouse-y', `${y}px`);
+      });
+
+      interactiveButton.addEventListener('mouseleave', () => {
+        interactiveButton.style.removeProperty('--mouse-x');
+        interactiveButton.style.removeProperty('--mouse-y');
+      });
+    }
+  </script>
+{% endblock %}
+

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}AVOCADO{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <nav class="nav-center" aria-label="Primary">
+          <ul class="tube-nav" role="tablist">
+            <li><a href="{{ url_for('upload_form') }}" class="tube-link active" id="home-link">Home</a></li>
+            <li><a href="#" class="tube-link" id="about-link">About</a></li>
+            <li><a href="#" class="tube-link" id="help-link">Help</a></li>
+            <li><a href="#" class="tube-link">Sign in</a></li>
+            <span class="tube-indicator" aria-hidden="true"></span>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>Upload a CSV to discover clusters in your dataset.</p>
+      </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal" aria-hidden="true">
+      <div class="modal-overlay" id="about-modal-overlay"></div>
+      <div class="modal-content">
+        <button class="modal-close" id="about-modal-close" aria-label="Close modal">&times;</button>
+        <div class="modal-header">
+          <h2>About AVOCADO</h2>
+        </div>
+        <div class="modal-body">
+          <section class="help-section">
+            <h3>🌱 What is AVOCADO?</h3>
+            <p>AVOCADO is an intelligent data clustering platform that helps you discover hidden patterns in your datasets using advanced machine learning algorithms. Our mission is to make data analysis accessible to everyone, enabling businesses to make data-driven decisions effortlessly.</p>
+          </section>
+
+          <section class="help-section">
+            <h3>🎯 Our Mission</h3>
+            <p>We believe that powerful data insights shouldn't require complex tools or extensive technical knowledge. AVOCADO simplifies the process of data clustering, allowing you to:</p>
+            <ul>
+              <li>Uncover hidden patterns in your data</li>
+              <li>Make informed business decisions</li>
+              <li>Understand your customers, products, or resources better</li>
+              <li>Transform raw data into actionable insights</li>
+            </ul>
+          </section>
+
+          <section class="help-section">
+            <h3>⚡ Key Features</h3>
+            <ul>
+              <li><strong>Automatic Clustering:</strong> Advanced K-Means algorithm with optimal cluster detection</li>
+              <li><strong>User-Friendly Interface:</strong> Simple drag-and-drop CSV upload process</li>
+              <li><strong>Real-Time Processing:</strong> Background task processing with live status updates</li>
+              <li><strong>Export Results:</strong> Download your clustering results as JSON files</li>
+              <li><strong>No Technical Skills Required:</strong> Designed for users of all technical levels</li>
+            </ul>
+          </section>
+
+          <section class="help-section">
+            <h3>🔬 Technology</h3>
+            <p>AVOCADO is built with cutting-edge technologies:</p>
+            <ul>
+              <li><strong>FastAPI:</strong> Modern, high-performance web framework</li>
+              <li><strong>scikit-learn:</strong> Industry-standard machine learning library</li>
+              <li><strong>Pandas & NumPy:</strong> Powerful data processing and analysis</li>
+              <li><strong>K-Means Clustering:</strong> Proven algorithm for pattern discovery</li>
+            </ul>
+          </section>
+
+          <section class="help-section">
+            <h3>💡 Why AVOCADO?</h3>
+            <p>Just like an avocado brings together different flavors to create something unique, AVOCADO brings together your data points to reveal meaningful clusters and insights. We chose this name because:</p>
+            <ul>
+              <li>Data clustering groups similar items together, just like how avocados cluster on trees</li>
+              <li>Both require the right conditions to reveal their value</li>
+              <li>Both can be transformative when used correctly</li>
+            </ul>
+          </section>
+
+          <section class="help-section">
+            <h3>🚀 Get Started</h3>
+            <p>Ready to discover insights in your data? Simply upload your CSV file and let AVOCADO do the rest. No complex setup, no technical barriers—just powerful clustering at your fingertips.</p>
+            <p>For detailed instructions, check out our <a href="#" id="about-to-help" style="color: var(--color-sage); text-decoration: underline;">Help section</a>.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal" aria-hidden="true">
+      <div class="modal-overlay" id="modal-overlay"></div>
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+        <div class="modal-header">
+          <h2>How to Use AVOCADO</h2>
+        </div>
+        <div class="modal-body">
+          <section class="help-section">
+            <h3>📊 Getting Started</h3>
+            <ol>
+              <li>Prepare your CSV file with a <code>name</code> column for person identification</li>
+              <li>Include at least one numeric column for clustering analysis</li>
+              <li>Click "Choose your CSV file" and select your dataset</li>
+              <li>Click "Start clustering" to begin the analysis</li>
+              <li>Wait for processing to complete and view your results</li>
+            </ol>
+          </section>
+
+          <section class="help-section">
+            <h3>💼 Business Applications</h3>
+            <p>AVOCADO helps you discover hidden patterns in your data:</p>
+            <ul>
+              <li><strong>Customer Segmentation:</strong> Group customers by behavior, preferences, or demographics to create targeted marketing campaigns</li>
+              <li><strong>Product Recommendations:</strong> Identify user clusters to personalize product suggestions</li>
+              <li><strong>Resource Allocation:</strong> Understand team or resource groupings for better planning</li>
+              <li><strong>Market Research:</strong> Analyze survey data to identify distinct customer segments</li>
+              <li><strong>Risk Assessment:</strong> Group entities by risk factors for better decision-making</li>
+            </ul>
+          </section>
+
+          <section class="help-section">
+            <h3>📋 Dataset Requirements</h3>
+            <p>Your CSV file should include:</p>
+            <ul>
+              <li><strong>Required:</strong> A <code>name</code> column (text) for identifying each record</li>
+              <li><strong>Required:</strong> At least one numeric column (e.g., age, score, amount)</li>
+              <li><strong>Optional:</strong> Categorical columns that will be automatically encoded:
+                <ul>
+                  <li><code>gaming_platform_top1</code></li>
+                  <li><code>social_platform_top1</code></li>
+                  <li><code>ott_top1</code></li>
+                  <li><code>content_creation_freq</code></li>
+                </ul>
+              </li>
+            </ul>
+            <p><strong>Example CSV structure:</strong></p>
+            <pre><code>name,age,score,platform
+John,25,85,Platform A
+Jane,30,92,Platform B</code></pre>
+          </section>
+
+          <section class="help-section">
+            <h3>🎯 Understanding Results</h3>
+            <p>After clustering, you'll receive:</p>
+            <ul>
+              <li>Number of optimal clusters identified</li>
+              <li>Grouped data showing which records belong to each cluster</li>
+              <li>Downloadable JSON file with complete clustering results</li>
+            </ul>
+            <p>Use these clusters to make data-driven decisions for your business strategy.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    {% block scripts %}{% endblock %}
+    <script>
+      (function() {
+        const nav = document.querySelector('.tube-nav');
+        if (!nav) return;
+        const indicator = nav.querySelector('.tube-indicator');
+        const links = nav.querySelectorAll('.tube-link');
+
+        function setIndicator(el) {
+          const rect = el.getBoundingClientRect();
+          const navRect = nav.getBoundingClientRect();
+          const left = rect.left - navRect.left;
+          const top = rect.top - navRect.top;
+          indicator.style.left = left + 'px';
+          indicator.style.top = top + 'px';
+          indicator.style.width = rect.width + 'px';
+          indicator.style.height = rect.height + 'px';
+
+          const capWidth = Math.max(28, Math.min(rect.width * 0.6, 56));
+          const glowWidth = Math.max(70, Math.min(rect.width * 1.6, 150));
+          indicator.style.setProperty('--indicator-cap-width', `${capWidth}px`);
+          indicator.style.setProperty('--indicator-glow-width', `${glowWidth}px`);
+        }
+
+        let active = nav.querySelector('.tube-link.active') || links[0];
+        setIndicator(active);
+
+        links.forEach((link) => {
+          link.addEventListener('mouseenter', () => setIndicator(link));
+          link.addEventListener('focus', () => setIndicator(link));
+          link.addEventListener('mouseleave', () => setIndicator(active));
+          link.addEventListener('click', (e) => {
+            // Allow navigation for Home link, handle Help and About separately
+            if (link.id === 'home-link') {
+              // Update active state
+              active && active.classList.remove('active');
+              link.classList.add('active');
+              active = link;
+              setIndicator(active);
+              
+              // If already on home page, force refresh
+              const currentPath = window.location.pathname;
+              const homePath = link.getAttribute('href');
+              if (currentPath === homePath || currentPath === '/') {
+                e.preventDefault();
+                window.location.href = homePath;
+              }
+              // Otherwise, let it navigate normally
+              return;
+            }
+            // Don't prevent default for help and about links, handle them separately
+            if (link.id !== 'help-link' && link.id !== 'about-link') {
+              e.preventDefault();
+              active && active.classList.remove('active');
+              link.classList.add('active');
+              active = link;
+              setIndicator(active);
+            }
+          });
+        });
+
+        window.addEventListener('resize', () => setIndicator(active));
+      })();
+
+      // Help Modal functionality
+      (function() {
+        const helpLink = document.getElementById('help-link');
+        const helpModal = document.getElementById('help-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalClose = document.getElementById('modal-close');
+
+        if (!helpLink || !helpModal) return;
+
+        function openModal() {
+          helpModal.setAttribute('aria-hidden', 'false');
+          helpModal.classList.add('modal-open');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+          helpModal.setAttribute('aria-hidden', 'true');
+          helpModal.classList.remove('modal-open');
+          document.body.style.overflow = '';
+        }
+
+        helpLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal();
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', closeModal);
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && helpModal.classList.contains('modal-open')) {
+            closeModal();
+          }
+        });
+      })();
+
+      // About Modal functionality
+      (function() {
+        const aboutLink = document.getElementById('about-link');
+        const aboutModal = document.getElementById('about-modal');
+        const aboutModalOverlay = document.getElementById('about-modal-overlay');
+        const aboutModalClose = document.getElementById('about-modal-close');
+        const aboutToHelpLink = document.getElementById('about-to-help');
+
+        if (!aboutLink || !aboutModal) return;
+
+        function openModal() {
+          aboutModal.setAttribute('aria-hidden', 'false');
+          aboutModal.classList.add('modal-open');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+          aboutModal.setAttribute('aria-hidden', 'true');
+          aboutModal.classList.remove('modal-open');
+          document.body.style.overflow = '';
+        }
+
+        aboutLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal();
+        });
+
+        aboutModalClose.addEventListener('click', closeModal);
+        aboutModalOverlay.addEventListener('click', closeModal);
+
+        // Link from About to Help
+        if (aboutToHelpLink) {
+          aboutToHelpLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal();
+            setTimeout(() => {
+              const helpLink = document.getElementById('help-link');
+              if (helpLink) helpLink.click();
+            }, 300);
+          });
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && aboutModal.classList.contains('modal-open')) {
+            closeModal();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
+
