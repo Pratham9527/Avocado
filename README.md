@@ -125,16 +125,3 @@ The project includes a `Procfile` for easy deployment to platforms like Heroku. 
 1. Ensure all dependencies are listed in `requirements.txt`
 2. Configure your deployment platform
 3. The application will start using the command in `Procfile`
-
-## 📝 License
-
-This project is open source and available for use.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-**Note**: This application processes data in-memory. For production use with large datasets, consider implementing database storage and more robust task management.
-
